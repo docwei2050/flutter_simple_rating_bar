@@ -49,4 +49,5 @@ color                           -   The body color of star
 Finally：
 Thanking for everything... 
 [thangmam/smoothratingbar](https://github.com/thangmam/smoothratingbar)
+
 [sarbagyastha/flutter_rating_bar](https://github.com/sarbagyastha/flutter_rating_bar)
