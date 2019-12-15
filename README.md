@@ -46,8 +46,9 @@ color                           -   The body color of star
 ### Screenshots
 ![alt text](https://github.com/docwei2050/flutter_simple_rating_bar/blob/master/screenshot/screen.png "support touch")
 
-Finally：
+### Finally：
 Thanking for everything... 
+
 [thangmam/smoothratingbar](https://github.com/thangmam/smoothratingbar)
 
 [sarbagyastha/flutter_rating_bar](https://github.com/sarbagyastha/flutter_rating_bar)
