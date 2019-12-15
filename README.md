@@ -13,7 +13,8 @@ In your flutter project add the dependency:
 
 ## Usage example
 ``` 
-import 'package:flutter_simple_rating_bar/rating_bar.dart';
+import 'package:flutter_simple_rating_bar/flutter_simple_rating_bar.dart';
+
 ``` 
 
 ```java 
