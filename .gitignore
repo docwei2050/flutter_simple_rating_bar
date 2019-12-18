@@ -20,3 +20,13 @@ doc/api/
 *.js.deps
 *.js.map
 *.lock
+android/.gradle/buildOutputCleanup/outputFiles.bin
+android/.gradle/buildOutputCleanup/buildOutputCleanup.lock
+android/.gradle/4.10.2/taskHistory/taskHistory.lock
+android/.gradle/4.10.2/taskHistory/taskHistory.bin
+android/.gradle/4.10.2/javaCompile/taskHistory.bin
+android/.gradle/4.10.2/javaCompile/javaCompile.lock
+android/.gradle/4.10.2/fileHashes/resourceHashesCache.bin
+android/.gradle/4.10.2/javaCompile/jarAnalysis.bin
+android/.gradle/4.10.2/fileHashes/fileHashes.lock
+android/.gradle/4.10.2/fileHashes/fileHashes.bin
