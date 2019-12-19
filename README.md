@@ -21,17 +21,17 @@ import 'package:flutter_simple_rating_bar/flutter_simple_rating_bar.dart';
 RatingBar(
     rating: 3,
     icon:Icon(Icons.star,size:40,color: Colors.grey,),
-     starCount: 5,
-     spacing: 5.0,
-      size: 40,
-      isIndicator: false,
-      allowHalfRating: true,
-      onRatingCallback: (double value,ValueNotifier<bool> isIndicator){
+    starCount: 5,
+    spacing: 5.0,
+    size: 40,
+    isIndicator: false,
+    allowHalfRating: true,
+    onRatingCallback: (double value,ValueNotifier<bool> isIndicator){
                   print('Number of stars-->  $value');
                   //change the isIndicator from false  to true ,the       RatingBar cannot support touch event;
                   isIndicator.value=true;
       },
-       color: Colors.amber,
+     color: Colors.amber,
       )
 ```
 
