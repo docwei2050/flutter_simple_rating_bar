@@ -22,24 +22,26 @@ class _MyAppState extends State<MyApp>{
           children: <Widget>[
             Container(
               alignment: Alignment.center,
-              child:  RatingBarNew(
+              child:  RatingBar(
                 rating: 3,
                 icon:Icon(Icons.star,size:40,color: Colors.grey,),
                 starCount: 5,
                 spacing: 5.0,
-                size: 50,
+                size: 40,
+                isIndicator: false,
                 allowHalfRating: true,
-                onRatingCallback: (double value,ValueNotifier<bool> notifier){
+                onRatingCallback: (double value,ValueNotifier<bool> isIndicator){
                   print('Number of stars-->  $value');
-                 // notifier.value=true;
+                  //change the isIndicator from false  to true ,the RatingBar cannot support touch event;
+                  isIndicator.value=true;
                 },
                 color: Colors.amber,
               ),
             ),
             Container(
               alignment: Alignment.center,
-              margin: const EdgeInsets.only(top: 100),
-              child: RatingBarNew(
+              margin: const EdgeInsets.only(top: 60),
+              child: RatingBar(
                 rating: 3,
                 icon:Icon(Icons.music_note,size: 45,color: Colors.grey),
                 starCount: 5,
@@ -52,13 +54,29 @@ class _MyAppState extends State<MyApp>{
                 },
                 color: Colors.amber,
               ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              margin: const EdgeInsets.only(top: 60),
+              child: RatingBar(
+                rating: 3,
+                icon:Icon(Icons.stars,size: 45,color: Colors.grey),
+                starCount: 5,
+                spacing: 5.0,
+                size: 45,
+                isIndicator: false,
+                allowHalfRating: true,
+                onRatingCallback: (value,notifier){
+                  //isIndicator:=true, so you dont need to  care this.
+                },
+                color: Colors.amber,
+              ),
             )
           ],
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: (){
             setState(() {
-
             });
           },
         ),),

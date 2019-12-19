@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 typedef RatingChangeCallBack<T> = void Function(
     double value, ValueNotifier<bool> isIndicator);
 
-class RatingBarNew extends StatefulWidget {
+class RatingBar extends StatefulWidget {
   final int starCount;
   final double rating;
   final Color color;
@@ -16,7 +16,7 @@ class RatingBarNew extends StatefulWidget {
   final double spacing;
   final RatingChangeCallBack onRatingCallback;
 
-  RatingBarNew(
+  RatingBar(
       {this.starCount = 5,
       this.rating = 0.0,
       this.color,
@@ -32,30 +32,33 @@ class RatingBarNew extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _RatingBarNewState();
+    return _RatingBarState();
   }
 }
 
-class _RatingBarNewState extends State<RatingBarNew> {
-  final ValueNotifier<double> _ratingNotifier = ValueNotifier<double>(0.0);
-  final ValueNotifier<bool> _isIndicatorNotifier = ValueNotifier<bool>(false);
+class _RatingBarState extends State<RatingBar> {
+  ValueNotifier<double> _ratingNotifier;
+
+  ValueNotifier<bool> _isIndicatorNotifier;
   double _rating;
   bool _isIndicator;
+  List halfs = List();
+  List fulls = List();
 
   @override
   void initState() {
     super.initState();
     _isIndicator = widget.isIndicator;
     _rating = widget.rating;
+    _ratingNotifier = ValueNotifier<double>(_rating);
+    _isIndicatorNotifier = ValueNotifier<bool>(_isIndicator);
 
+    assembleListForFullRating();
+    assembleListForHalfRating();
   }
 
   @override
   Widget build(BuildContext context) {
-    print('build----${_rating}');
-    print('build----${_isIndicator}');
-    /*_isIndicatorNotifier.value = _isIndicator;
-    _ratingNotifier.value = _rating;*/
     return new Material(
         color: Colors.transparent,
         child: ValueListenableBuilder(
@@ -87,7 +90,9 @@ class _RatingBarNewState extends State<RatingBarNew> {
         height: widget.size,
         child: widget.icon,
       );
-    } else if (index > rating - (widget.allowHalfRating ? 0.5 : 1.0) && index < rating) {
+    } else if ((index >= rating - (widget.allowHalfRating ? 0.5 : 1.0) &&
+            index < rating) &&
+        widget.allowHalfRating) {
       //select a half of the star
       container = Container(
           margin: EdgeInsets.only(right: widget.spacing),
@@ -119,8 +124,18 @@ class _RatingBarNewState extends State<RatingBarNew> {
       );
     }
 
-    return isIndicator ? container : GestureDetector(
+    return isIndicator
+        ? container
+        : GestureDetector(
             onTap: () {
+              double value = index.toDouble() + 1;
+              if (widget.onRatingCallback != null) {
+                widget.onRatingCallback(value, _isIndicatorNotifier);
+              }
+              _ratingNotifier.value = value;
+            },
+            onTapDown: (_) {
+
               double value = index.toDouble() + 1;
               if (widget.onRatingCallback != null) {
                 widget.onRatingCallback(value, _isIndicatorNotifier);
@@ -130,10 +145,9 @@ class _RatingBarNewState extends State<RatingBarNew> {
             onHorizontalDragUpdate: (dragDetails) {
               RenderBox box = context.findRenderObject();
               var _pos = box.globalToLocal(dragDetails.globalPosition);
-              var old = _pos.dx / widget.size;
-              //take the spacing into account。
-              double i = (_pos.dx - (old-1)* widget.spacing) / widget.size;
-              double newRating = widget.allowHalfRating ? i : i.round().toDouble();
+              double newRating = widget.allowHalfRating
+                  ? getHalfRating(_pos.dx)
+                  : getFullRating(_pos.dx);
               if (newRating > widget.starCount) {
                 newRating = widget.starCount.toDouble();
               }
@@ -141,16 +155,7 @@ class _RatingBarNewState extends State<RatingBarNew> {
                 newRating = 0.0;
               }
               if (widget.onRatingCallback != null) {
-                int value = newRating.toInt();
-                if (widget.allowHalfRating) {
-                  if (newRating < value + 0.5) {
-                    widget.onRatingCallback(value + 0.5, _isIndicatorNotifier);
-                  } else {
-                    widget.onRatingCallback(value + 1 > widget.starCount ? widget.starCount.toDouble() : value + 1, _isIndicatorNotifier);
-                  }
-                } else {
-                  widget.onRatingCallback(value > widget.starCount ? widget.starCount.toDouble() : value, _isIndicatorNotifier);
-                }
+                widget.onRatingCallback(newRating, _isIndicatorNotifier);
               }
               _ratingNotifier.value = newRating;
             },
@@ -158,6 +163,64 @@ class _RatingBarNewState extends State<RatingBarNew> {
           );
   }
 
+  assembleListForHalfRating() {
+    for (int i = 1; i <= widget.starCount + 1; i++) {
+      halfs.add((widget.size + widget.spacing) * (i - 1) + widget.size / 4);
+      halfs.add((widget.size + widget.spacing) * (i - 1) + widget.size * 3 / 4);
+    }
+  }
+
+  assembleListForFullRating() {
+    for (int i = 1; i <= widget.starCount + 1; i++) {
+      fulls.add((widget.size + widget.spacing) * (i - 1) + widget.size / 2);
+    }
+  }
+
+  double getHalfRating(double dx) {
+    int low = 0;
+    int high = halfs.length - 1;
+    int middle = 0;
+    int key = 0;
+    if (dx < halfs[low]) {
+      key = 0;
+    }
+    if (dx > halfs[high]) {
+      key = halfs.length;
+    }
+    while (low <= high) {
+      middle = ((low + high) / 2).toInt();
+      if (halfs[middle] > dx) {
+        high = middle - 1;
+      } else if (halfs[middle] < dx) {
+        low = middle + 1;
+      }
+    }
+    key = high;
+    return key / 2;
+  }
+
+  double getFullRating(double dx) {
+    int low = 0;
+    int high = fulls.length - 1;
+    int middle = 0;
+    int key = 0;
+    if (dx < fulls[low]) {
+      key = 0;
+    }
+    if (dx > fulls[high]) {
+      key = fulls.length;
+    }
+    while (low <= high) {
+      middle = ((low + high) / 2).toInt();
+      if (fulls[middle] > dx) {
+        high = middle - 1;
+      } else if (fulls[middle] < dx) {
+        low = middle + 1;
+      }
+    }
+    key = low;
+    return key.toDouble();
+  }
   @override
   void dispose() {
     super.dispose();
