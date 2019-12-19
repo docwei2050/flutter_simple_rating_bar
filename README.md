@@ -8,7 +8,7 @@ In your flutter project add the dependency:
 ```
     dependencies:
         ...
-        flutter_simple_rating_bar: 0.0.1
+        flutter_simple_rating_bar: 0.0.2
 ```
 
 ## Usage example
@@ -19,17 +19,20 @@ import 'package:flutter_simple_rating_bar/flutter_simple_rating_bar.dart';
 
 ```java 
 RatingBar(
-           rating: 3,
-           icon:Icon(Icons.star,size:40,color: Colors.grey,),
-           starCount: 5,
-           spacing: 5.0,
-           size: 50,
-           allowHalfRating: true,
-           onRatingCallback: (value){
-             print('Number of stars-->  $value');
-           },
-           color: Colors.amber,
-        )
+    rating: 3,
+    icon:Icon(Icons.star,size:40,color: Colors.grey,),
+     starCount: 5,
+     spacing: 5.0,
+      size: 40,
+      isIndicator: false,
+      allowHalfRating: true,
+      onRatingCallback: (double value,ValueNotifier<bool> isIndicator){
+                  print('Number of stars-->  $value');
+                  //change the isIndicator from false  to true ,the       RatingBar cannot support touch event;
+                  isIndicator.value=true;
+      },
+       color: Colors.amber,
+      )
 ```
 
 ## Constructor parameters
@@ -39,7 +42,8 @@ icon                            -   select your icon
 starCount                       -   The maximum amount of stars
 spacing                         -   Spacing between stars(default is 0.0)
 allowHalfRating                 -   Whether to use whole number for rating(1.0  or 0.5)
-onRatingCallback(double rating) -   Rating changed callback
+onRatingCallback(double rating,ValueNotifier<bool> isIndicator) 
+-   Rating changed callback
 size                            -   The size of a single star
 color                           -   The body color of star
 ```
