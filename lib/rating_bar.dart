@@ -189,7 +189,8 @@ class _RatingBarState extends State<RatingBar> {
       key = halfs.length;
     }
     while (low <= high) {
-      middle = ((low + high) / 2).toInt();
+      middle = (low + high) ~/ 2;
+
       if (halfs[middle] > dx) {
         high = middle - 1;
       } else if (halfs[middle] < dx) {
@@ -212,7 +213,7 @@ class _RatingBarState extends State<RatingBar> {
       key = fulls.length;
     }
     while (low <= high) {
-      middle = ((low + high) / 2).toInt();
+      middle = (low + high) ~/ 2;
       if (fulls[middle] > dx) {
         high = middle - 1;
       } else if (fulls[middle] < dx) {
