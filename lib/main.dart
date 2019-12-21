@@ -35,6 +35,10 @@ class _MyAppState extends State<MyApp>{
                   //change the isIndicator from false  to true ,the RatingBar cannot support touch event;
                   isIndicator.value=true;
                 },
+                clickedCallbackAsIndicator: (){
+                  // when isIndicator is true ,user click the stars, this callback can be called.
+                  print('clickedMe');
+                },
                 color: Colors.amber,
               ),
             ),
@@ -51,6 +55,9 @@ class _MyAppState extends State<MyApp>{
                 allowHalfRating: true,
                 onRatingCallback: (value,notifier){
                   //isIndicator:=true, so you dont need to  care this.
+                },
+                clickedCallbackAsIndicator: (){
+                  print('clickMe');
                 },
                 color: Colors.amber,
               ),

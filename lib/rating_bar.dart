@@ -15,6 +15,7 @@ class RatingBar extends StatefulWidget {
   final bool isIndicator;
   final double spacing;
   final RatingChangeCallBack onRatingCallback;
+  final VoidCallback clickedCallbackAsIndicator;
 
   RatingBar(
       {this.starCount = 5,
@@ -23,6 +24,7 @@ class RatingBar extends StatefulWidget {
       this.icon,
       this.size,
       this.onRatingCallback,
+      this.clickedCallbackAsIndicator,
       this.isIndicator = false,
       this.spacing = 0.0,
       this.allowHalfRating = true}) {
@@ -125,17 +127,16 @@ class _RatingBarState extends State<RatingBar> {
     }
 
     return isIndicator
-        ? container
+        ? GestureDetector(
+            onTap: () {
+              if (widget.clickedCallbackAsIndicator != null) {
+                widget.clickedCallbackAsIndicator();
+              }
+            },
+            child: container,
+          )
         : GestureDetector(
             onTap: () {
-              double value = index.toDouble() + 1;
-              if (widget.onRatingCallback != null) {
-                widget.onRatingCallback(value, _isIndicatorNotifier);
-              }
-              _ratingNotifier.value = value;
-            },
-            onTapDown: (_) {
-
               double value = index.toDouble() + 1;
               if (widget.onRatingCallback != null) {
                 widget.onRatingCallback(value, _isIndicatorNotifier);
@@ -221,6 +222,7 @@ class _RatingBarState extends State<RatingBar> {
     key = low;
     return key.toDouble();
   }
+
   @override
   void dispose() {
     super.dispose();
