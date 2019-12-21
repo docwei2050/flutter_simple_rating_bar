@@ -8,7 +8,7 @@ In your flutter project add the dependency:
 ```
     dependencies:
         ...
-        flutter_simple_rating_bar: 0.0.2
+        flutter_simple_rating_bar: 0.0.3
 ```
 
 ## Usage example
